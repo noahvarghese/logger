@@ -3,9 +3,9 @@
 ![npm](https://badges.aleen42.com/src/npm.svg)
 <br />
 <br />
-![Continuous Deployment](https://github.com/noahvarghese/getJsonOpts/actions/workflows/cd.yaml/badge.svg)
+![Continuous Deployment](https://github.com/noahvarghese/ts-log/actions/workflows/cd.yaml/badge.svg)
 <br />
-![Continuous Integration](https://github.com/noahvarghese/getJsonOpts/actions/workflows/ci.yaml/badge.svg)
+![Continuous Integration](https://github.com/noahvarghese/ts-log/actions/workflows/ci.yaml/badge.svg)
 <br />
 <br />
 ![Statements](https://img.shields.io/badge/statements-69.87%25-red.svg?style=flat)
