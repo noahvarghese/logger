@@ -28,6 +28,22 @@ export const defaultLogMethod = (): LogMethod => ({
 
 export const logMethodFactory = (options?: Partial<LogMethod>): LogMethod =>
     Object.assign(defaultLogMethod(), options);
+
+export const logMethods = Object.entries(LogLevels).reduce(
+    (prev, [currKey, currVal]) => {
+        if (isNaN(Number(currKey))) {
+            prev[currKey as unknown as LogLevels] = {
+                prefix: `[ ${currKey} ]`,
+                logger: console[
+                    currVal as keyof typeof console
+                ] as typeof console.log,
+            };
+        }
+        return prev;
+    },
+    [] as { prefix: string; logger: typeof console.log }[]
+);
+
 /**
  * get the details from the call stack at the provided index
  * @param index
