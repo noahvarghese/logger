@@ -1,4 +1,9 @@
-import { defaultLogMethod, LogMethod, logMethodFactory } from "src";
+import {
+    defaultLogMethod,
+    LogMethod,
+    logMethodFactory,
+    outputCallStack,
+} from "src";
 
 test("empty log method", () => {
     let errorThrown = false;
@@ -33,4 +38,8 @@ test("log factory", () => {
     expect(logMethod.prefix).toBe(prefix);
 });
 
-test.todo("output call stack");
+test("output call stack", () => {
+    expect(outputCallStack(3)).toBe(
+        "at Promise.then.completed (/home/user/build/ts-log/node_modules/jest-circus/build/utils.js:391:28)"
+    );
+});
