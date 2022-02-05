@@ -28,7 +28,6 @@ export const defaultLogMethod = (): LogMethod => ({
 
 export const logMethodFactory = (options?: Partial<LogMethod>): LogMethod =>
     Object.assign(defaultLogMethod(), options);
-
 /**
  * get the details from the call stack at the provided index
  * @param index
