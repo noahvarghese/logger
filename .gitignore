@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Output
+build/
+
+# Dependencies
+node_modules/
+
+# Test output 
+test-report.html
+coverage/
+.nyc_output/

@@ -1,0 +1,56 @@
+name: Continuous Integration 
+on:
+  push:
+    branches:
+      - "*"
+      - "!main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  check-formatting:
+    if: "(!contains(github.event.head_commit.message, 'pipeline skip') && !contains(github.event.head_commit.message, 'skip pipeline')) || (!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci'))"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: cache node modules
+        uses: ./.github/actions/cache-node-modules
+      - name: check formatting
+        run: npm run format:check
+  continuous-integration:
+    if: "(!contains(github.event.head_commit.message, 'pipeline skip') && !contains(github.event.head_commit.message, 'skip pipeline')) || (!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci'))"
+    env:
+      LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
+      TIMEOUT_MULTIPLIER: ${{ secrets.TIMEOUT_MULTIPLIER }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: set npm shell
+        run: npm run init:npm-shell
+        shell: bash
+      - uses: actions/setup-node@v2
+      - id: cache-node-modules
+        uses: ./.github/actions/cache-node-modules
+      - name: test
+        run: |
+          npm run test
+        shell: bash
+      - name: build
+        run: npm run build
+      - name: Publish npm log
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "npm-log"
+          path: "/home/runner/.npm/_logs"
+      - name: Publish test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "test-report"
+          path: |
+            test-report.html

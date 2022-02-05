@@ -1,0 +1,27 @@
+#!/bin/sh
+
+printf "\n\n"
+echo "******************* PRE COMMIT HOOK STARTED ***********************"
+printf "\n\n"
+
+npm ci
+
+CHANGED_UNIT_TEST_FILES=($(npm run --silent test -- -o --listTests))
+
+if [[ ${#CHANGED_UNIT_TEST_FILES[@]} -gt 0 ]]; then
+    echo -e "\n\n[ LOG ]: Unit Tests:"
+    printf '%s\n' "${CHANGED_UNIT_TEST_FILES[@]}" 
+    npm run test 
+else
+    echo -e "\n\n[ INFO ]: No new tests found"
+fi
+
+TEST_RESULT=$?
+
+printf "\n\n"
+echo "******************* PRE COMMIT HOOK FINISHED ***********************"
+printf "\n\n"
+
+if [ $TEST_RESULT -gt 0 ]; then
+    exit 1
+fi
