@@ -114,3 +114,32 @@ describe("test valid configurations", () => {
         fn();
     });
 });
+
+test("0 as an environment variable", async () => {
+    let stdErr = "",
+        stdOut = "";
+
+    const fn = "/tmp/test.ts";
+    fs.writeFileSync(
+        fn,
+        `import Logs from '${__dirname}';\nLogs.init();\nLogs.Error('test');\n`
+    );
+
+    ({ stdout: stdOut, stderr: stdErr } = await new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((res, rej) => {
+        child.exec(
+            `LOG_LEVEL=0 ./node_modules/.bin/ts-node ${fn}`,
+            (err, stdout, stderr) => {
+                if (err) rej(err);
+                res({ stderr, stdout });
+            }
+        );
+    }));
+
+    fs.unlinkSync(fn);
+
+    expect(stdErr).toMatch(/^\[ ERROR \]: test/);
+    expect(stdOut).toMatch("");
+});

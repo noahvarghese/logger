@@ -36,7 +36,8 @@ import Logger from "@noahvarghese/logger";
 process.env["LOG_LEVEL"] = 1;
 
 /**
- * Environment variable options that enable at most the preceding and current value(s) starting at 0 increasing by 1 each time
+ * Environment variable options that enable at most the preceding and current corresponding functions
+ * for the values starting at 0 increasing by 1 each time
  *
  * enum LogLevels {
  * ERROR,
