@@ -1,7 +1,7 @@
 {
-    "name": "logger",
+    "name": "@noahvarghese/logger",
     "version": "1.0.0",
-    "description": "",
+    "description": "Custom logger for nodejs",
     "main": "index.js",
     "scripts": {
         "badges": "istanbul-badges-readme --coverageDir='./coverage'",
