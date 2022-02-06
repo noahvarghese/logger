@@ -21,7 +21,7 @@
 <br />
 <br />
 
-<img src="assets/log.png" width="100" alt="log" />
+<img src="https://raw.githubusercontent.com/noahvarghese/logger/main/assets/log.png" width="100" alt="log" />
 
 # Logger
 
