@@ -21,8 +21,6 @@
 <br />
 <br />
 
-# TS Logger
-
 ![log](assets/log.png)
 
 ## About
