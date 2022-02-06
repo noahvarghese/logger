@@ -8,13 +8,13 @@
 ![Continuous Integration](https://github.com/noahvarghese/ts-log/actions/workflows/ci.yaml/badge.svg)
 <br />
 <br />
-![Statements](https://img.shields.io/badge/statements-75.8%25-red.svg?style=flat)
+![Statements](https://img.shields.io/badge/statements-96.77%25-brightgreen.svg?style=flat)
 <br/>
-![Lines](https://img.shields.io/badge/lines-76.36%25-red.svg?style=flat)
+![Lines](https://img.shields.io/badge/lines-98.18%25-brightgreen.svg?style=flat)
 <br/>
-![Functions](https://img.shields.io/badge/functions-46.66%25-red.svg?style=flat)
+![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat)
 <br/>
-![Branches](https://img.shields.io/badge/branches-64.28%25-red.svg?style=flat)
+![Branches](https://img.shields.io/badge/branches-89.28%25-yellow.svg?style=flat)
 <br/>
 <br/>
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

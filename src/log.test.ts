@@ -90,3 +90,27 @@ describe("test output", () => {
         expect(stdOut).toMatch(message);
     });
 });
+
+describe("test valid configurations", () => {
+    const cases = [
+        { fn: Logs.Error, logLevel: 0 },
+        { fn: Logs.Error, logLevel: -1 },
+        { fn: Logs.Test, logLevel: 0 },
+        { fn: Logs.Test, logLevel: -1 },
+        { fn: Logs.Warn, logLevel: 0 },
+        { fn: Logs.Warn, logLevel: -1 },
+        { fn: Logs.Debug, logLevel: 0 },
+        { fn: Logs.Debug, logLevel: -1 },
+        { fn: Logs.Log, logLevel: 0 },
+        { fn: Logs.Log, logLevel: -1 },
+        { fn: Logs.Cmd, logLevel: 0 },
+        { fn: Logs.Cmd, logLevel: -1 },
+        { fn: Logs.Sql, logLevel: 0 },
+        { fn: Logs.Sql, logLevel: -1 },
+    ];
+
+    test.each(cases)("%p", ({ logLevel, fn }) => {
+        Logs.init(logLevel === 0);
+        fn();
+    });
+});
