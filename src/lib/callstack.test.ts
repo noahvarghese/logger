@@ -1,10 +1,11 @@
 import path from "path";
+import { logMethods } from "src";
 import { getStackFrame } from "./callstack";
 
 test("valid", () => {
     expect(getStackFrame(3)).toBe(
         `at Promise.then.completed (${path.resolve(
-            `${__dirname}/../node_modules/jest-circus/build/utils.js`
+            `${__dirname}/../../node_modules/jest-circus/build/utils.js`
         )}:391:28)`
     );
 });
@@ -37,4 +38,8 @@ describe("invalid", () => {
         }
         expect(errorThrown).toBe(true);
     });
+});
+
+test("test", () => {
+    console.log(logMethods);
 });
