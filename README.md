@@ -39,7 +39,7 @@ process.env["LOG_LEVEL"] = 1;
  * The numbers are the environment variable options
  * -1 to disable all
  *
- * enum LogLevels {
+ * enum LogLevel {
  * ERROR=0,
  * TEST=1,
  * WARN=2,
