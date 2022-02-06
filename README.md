@@ -36,17 +36,17 @@ import Logger from "@noahvarghese/logger";
 process.env["LOG_LEVEL"] = 1;
 
 /**
- * Environment variable options that enable at most the preceding and current corresponding functions
- * for the values starting at 0 increasing by 1 each time
+ * The numbers are the environment variable options
+ * -1 to disable all
  *
  * enum LogLevels {
- * ERROR,
- * TEST,
- * WARN,
- * DEBUG,
- * LOG,
- * CMD,
- * SQL
+ * ERROR=0,
+ * TEST=1,
+ * WARN=2,
+ * DEBUG=3,
+ * LOG=4,
+ * CMD=5,
+ * SQL=6
  * }
  *
  */
