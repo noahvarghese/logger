@@ -21,7 +21,7 @@
 <br />
 <br />
 
-![log](assets/log.png | width=100)
+<img src="assets/log.png" width="100" alt="log" />
 
 # Logger
 
