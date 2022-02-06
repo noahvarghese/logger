@@ -1,3 +1,4 @@
+import path from "path";
 import Logs, {
     defaultLogMethod,
     LogMethod,
@@ -41,7 +42,9 @@ test("log factory", () => {
 describe("output call stack", () => {
     test("valid", () => {
         expect(outputCallStack(3)).toBe(
-            "at Promise.then.completed (/home/user/build/ts-log/node_modules/jest-circus/build/utils.js:391:28)"
+            `at Promise.then.completed (${path.resolve(
+                `${__dirname}/../node_modules/jest-circus/build/utils.js`
+            )}:391:28)`
         );
     });
 
@@ -62,6 +65,7 @@ describe("output call stack", () => {
         test("stack frame doesnt have any characters", () => {
             let errorThrown = false;
             try {
+                // The error is prefixed with the error type being thrown in this case 'Error:' which has a length of 7
                 expect(outputCallStack(0, 7));
             } catch (_e) {
                 const { message } = _e as Error;
