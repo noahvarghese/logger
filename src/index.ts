@@ -48,7 +48,7 @@ export default class Logs {
         Logs.add(LogLevel.TEST, ...args, getStackFrame(3));
 
     public static Warn = (...args: LogArgs): void =>
-        Logs.add(LogLevel.WARN, ...args);
+        Logs.add(LogLevel.WARN, ...args, getStackFrame(3));
 
     public static Debug = (...args: LogArgs): void =>
         Logs.add(LogLevel.DEBUG, ...args, getStackFrame(3));

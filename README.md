@@ -33,9 +33,10 @@ Javascript/Typescript logger. Basic right now, just used to share implementation
 import Logger from "@noahvarghese/logger";
 
 // Typically set in a .env file, on deployment, or within CI
-process.env["LOG_LEVEL"] = 1;
+process.env["LOG_LEVEL"] = 6;
 
 /**
+ * Setting the environment variable LOG_LEVEL dictates which logging calls will be output
  * The numbers are the environment variable options
  * -1 to disable all
  *
@@ -56,6 +57,21 @@ const disableLogs = false;
 
 // Required to load environment variable into class
 Logs.init(disableLogs);
+
+// Sample calls and output
+Logs.Error("error"); // [ ERROR ]: error [path to function where error ocurred]
+
+Logs.Test("test"); // [ TEST ]: test [path to function where error ocurred]
+
+Logs.Warn("warn"); // [ WARN ]: warn [path to function where error ocurred]
+
+Logs.Debug("debug"); // [ DEBUG ]: debug [path to function where error ocurred]
+
+Logs.Log("log"); // [ LOG ]: log
+
+Logs.Cmd("cmd"); // [ CMD ]: cmd
+
+Logs.Sql("sql"); // [ SQL ]: sql
 ```
 
 ## Development - Getting Started
