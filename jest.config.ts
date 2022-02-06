@@ -1,7 +1,5 @@
-import Logs from "./src/util/logs";
-
 if (process.argv.includes("--listTests") === false) {
-    Logs.Event("Jest config loaded");
+    console.log("[ EVENT ]: Jest config loaded");
 }
 
 export default {

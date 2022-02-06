@@ -1,7 +1,7 @@
 {
-    "name": "ts-log",
+    "name": "@noahvarghese/logger",
     "version": "1.0.0",
-    "description": "",
+    "description": "Custom logger for nodejs",
     "main": "index.js",
     "scripts": {
         "badges": "istanbul-badges-readme --coverageDir='./coverage'",
@@ -18,15 +18,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/noahvarghese/ts-log.git"
+        "url": "git+https://github.com/noahvarghese/logger.git"
     },
     "keywords": [],
     "author": "Noah Varghese <noah.varghese@mohawkcollege.ca>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/noahvarghese/ts-log/issues"
+        "url": "https://github.com/noahvarghese/logger/issues"
     },
-    "homepage": "https://github.com/noahvarghese/ts-log#readme",
+    "homepage": "https://github.com/noahvarghese/logger#readme",
     "devDependencies": {
         "@types/jest": "^27.4.0",
         "@typescript-eslint/eslint-plugin": "^5.10.2",
@@ -36,6 +36,7 @@
         "jest": "^27.4.7",
         "jest-environment-node": "^27.4.6",
         "jest-html-reporter": "^3.4.2",
+        "path": "^0.12.7",
         "prettier": "^2.5.1",
         "ts-jest": "^27.1.3",
         "ts-node": "^10.4.0",

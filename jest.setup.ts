@@ -1,6 +1,4 @@
-import Logs from "./src/util/logs";
-
-Logs.Event("Jest setup loaded");
+console.log("[ EVENT ]: Jest setup loaded");
 
 const { TIMEOUT_MULTIPLIER } = process.env;
 
