@@ -1,4 +1,4 @@
-export enum LogLevels {
+export enum LogLevel {
     ERROR,
     TEST,
     WARN,
@@ -29,10 +29,10 @@ export const defaultLogMethod = (): LogMethod => ({
 export const logMethodFactory = (options?: Partial<LogMethod>): LogMethod =>
     Object.assign(defaultLogMethod(), options);
 
-export const logMethods = Object.entries(LogLevels).reduce(
+export const logMethods = Object.entries(LogLevel).reduce(
     (prev, [currKey, currVal]) => {
         if (isNaN(Number(currKey))) {
-            prev[currKey as unknown as LogLevels] = {
+            prev[currKey as unknown as LogLevel] = {
                 prefix: `[ ${currKey} ]`,
                 logger: console[
                     currVal as keyof typeof console
@@ -49,8 +49,32 @@ export const logMethods = Object.entries(LogLevels).reduce(
  * @param index
  * @returns
  */
-export const outputCallStack = (index: number): string => {
+export const outputCallStack = (index: number, frontTrimLength = 4): string => {
     const { stack } = new Error();
-    const frame = stack?.split("\n")[index] ?? "";
-    return frame.substring(4);
+    if (!stack) throw new Error("No call stack provided");
+
+    const frames = stack.split("\n");
+
+    const f = frames[index];
+
+    if (!f) throw new Error(`Index ${index} out of bounds`);
+
+    // tab width is 4 characters, we are trimming the tab
+    if (f.length <= frontTrimLength)
+        throw new Error("call stack entry shorter than the trim length");
+    return f.substring(frontTrimLength);
 };
+
+export default class Logs {
+    public static logLevel: LogLevel = 0;
+
+    public static init = (disabled = false) => {
+        if (disabled) Logs.logLevel = -1;
+        else {
+            const level = process.env["LOG_LEVEL"] ?? "";
+            if (!level || level.trim() === "" || isNaN(Number(level)))
+                throw new Error("log level not set");
+            Logs.logLevel = Number(level);
+        }
+    };
+}
