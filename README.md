@@ -3,6 +3,8 @@
 ![npm](https://badges.aleen42.com/src/npm.svg)
 <br />
 <br />
+![Release](https://github.com/noahvarghese/logger/actions/workflows/release.yaml/badge.svg)
+<br />
 ![Continuous Deployment](https://github.com/noahvarghese/logger/actions/workflows/cd.yaml/badge.svg)
 <br />
 ![Continuous Integration](https://github.com/noahvarghese/logger/actions/workflows/ci.yaml/badge.svg)
