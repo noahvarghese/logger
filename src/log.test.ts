@@ -1,14 +1,10 @@
-import path from "path";
-import Logs, {
-    defaultLogMethod,
-    LogMethod,
-    logMethodFactory,
-    outputCallStack,
-} from "src";
+import child from "child_process";
+import fs from "fs";
+import Logs, { defaultLogMethod, logMethodFactory } from "src";
 
 test("empty log method", () => {
     let errorThrown = false;
-    const def: LogMethod = defaultLogMethod();
+    const def = defaultLogMethod();
 
     expect(def.prefix).toBe("NOT IMPLEMENTED");
 
@@ -39,64 +35,12 @@ test("log factory", () => {
     expect(logMethod.prefix).toBe(prefix);
 });
 
-describe("output call stack", () => {
-    test("valid", () => {
-        expect(outputCallStack(3)).toBe(
-            `at Promise.then.completed (${path.resolve(
-                `${__dirname}/../node_modules/jest-circus/build/utils.js`
-            )}:391:28)`
-        );
-    });
-
-    describe("invalid", () => {
-        test("index to large", () => {
-            const index = Infinity;
-            let errorThrown = false;
-            try {
-                expect(outputCallStack(index));
-            } catch (_e) {
-                const { message } = _e as Error;
-                expect(message).toBe(`Index ${index} out of bounds`);
-                errorThrown = true;
-            }
-            expect(errorThrown).toBe(true);
-        });
-
-        test("stack frame doesnt have any characters", () => {
-            let errorThrown = false;
-            try {
-                // The error is prefixed with the error type being thrown in this case 'Error:' which has a length of 7
-                expect(outputCallStack(0, 7));
-            } catch (_e) {
-                const { message } = _e as Error;
-                expect(message).toBe(
-                    `call stack entry shorter than the trim length`
-                );
-                errorThrown = true;
-            }
-            expect(errorThrown).toBe(true);
-        });
-    });
-});
-
 describe("init", () => {
     const logLevel = "69";
 
     beforeEach(() => {
         jest.resetModules();
         process.env["LOG_LEVEL"] = logLevel;
-    });
-
-    test("disabled", async () => {
-        const disabled = true;
-        Logs.init(disabled);
-        expect(Logs.logLevel).toBe(-1);
-    });
-
-    test("enabled", async () => {
-        const disabled = false;
-        Logs.init(disabled);
-        expect(Logs.logLevel).toBe(Number(logLevel));
     });
 
     test("invalid log level", () => {
@@ -114,6 +58,7 @@ describe("init", () => {
 
         expect(errorThrown).toBe(true);
     });
+
     test("no log level", () => {
         delete process.env["LOG_LEVEL"];
 
@@ -128,5 +73,58 @@ describe("init", () => {
         }
 
         expect(errorThrown).toBe(true);
+    });
+
+    describe("test output", () => {
+        const cases = [
+            {
+                enabled: true,
+                errMessage: /^\[ ERROR \]: test/,
+                message: "",
+                logger: "Error",
+            },
+            { enabled: false, errMessage: "", message: "", logger: "Error" },
+            {
+                enabled: true,
+                errMessage: "",
+                message: /^\[ TEST \]: test/,
+                logger: "Test",
+            },
+            { enabled: false, errMessage: "", message: "", logger: "Test" },
+        ];
+
+        test.each(cases)(
+            "%p",
+            async ({ enabled, errMessage, message, logger }) => {
+                let stdErr = "",
+                    stdOut = "";
+
+                const fn = "/tmp/test.ts";
+                fs.writeFileSync(
+                    fn,
+                    `import Logs from '${__dirname}';\nLogs.init();\nLogs.${logger}('test');\n`
+                );
+
+                ({ stdout: stdOut, stderr: stdErr } = await new Promise<{
+                    stdout: string;
+                    stderr: string;
+                }>((res, rej) => {
+                    child.exec(
+                        `LOG_LEVEL=${
+                            enabled ? 10 : -1
+                        } ./node_modules/.bin/ts-node ${fn}`,
+                        (err, stdout, stderr) => {
+                            if (err) rej(err);
+                            res({ stderr, stdout });
+                        }
+                    );
+                }));
+
+                fs.unlinkSync(fn);
+
+                expect(stdErr).toMatch(errMessage);
+                expect(stdOut).toMatch(message);
+            }
+        );
     });
 });

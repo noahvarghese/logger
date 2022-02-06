@@ -1,18 +1,27 @@
-export enum LogLevel {
+import { getStackFrame } from "./lib/callstack";
+
+enum LogLevel {
     ERROR,
     TEST,
     WARN,
     DEBUG,
     LOG,
+    CMD,
     SQL,
 }
 
 /**
- * The only good thing of console.log is the accumulator for the arguments
+ * The prefixes allowed
  */
-export type LogMethod = {
+type LogLevelKeys = keyof typeof LogLevel;
+type Logger = typeof console.log;
+type LogArgs = Parameters<Logger>;
+/**
+ * The intermediate data structure
+ */
+type LogMethod = {
     prefix: string;
-    logger: typeof console.log;
+    logger: Logger;
 };
 
 /**
@@ -26,47 +35,31 @@ export const defaultLogMethod = (): LogMethod => ({
     },
 });
 
+/**
+ * if any parameters are missing, alerts the user
+ * @param options detail assignment
+ * @returns
+ */
 export const logMethodFactory = (options?: Partial<LogMethod>): LogMethod =>
     Object.assign(defaultLogMethod(), options);
 
-export const logMethods = Object.entries(LogLevel).reduce(
-    (prev, [currKey, currVal]) => {
-        if (isNaN(Number(currKey))) {
-            prev[currKey as unknown as LogLevel] = {
-                prefix: `[ ${currKey} ]`,
-                logger: console[
-                    currVal as keyof typeof console
-                ] as typeof console.log,
-            };
-        }
-        return prev;
-    },
-    [] as { prefix: string; logger: typeof console.log }[]
-);
-
 /**
- * get the details from the call stack at the provided index
- * @param index
- * @returns
+ * Allowed mapping of options
  */
-export const outputCallStack = (index: number, frontTrimLength = 4): string => {
-    const { stack } = new Error();
-    if (!stack) throw new Error("No call stack provided");
-
-    const frames = stack.split("\n");
-
-    const f = frames[index];
-
-    if (!f) throw new Error(`Index ${index} out of bounds`);
-
-    // tab width is 4 characters, we are trimming the tab
-    if (f.length <= frontTrimLength)
-        throw new Error("call stack entry shorter than the trim length");
-    return f.substring(frontTrimLength);
-};
+export const logMethods = Object.keys(LogLevel).reduce((prev, key) => {
+    if (isNaN(Number(key))) {
+        prev[key as LogLevelKeys] = {
+            prefix: `[ ${key} ]:`,
+            logger:
+                (console[key.toLowerCase() as keyof Console] as Logger) ??
+                console.info,
+        };
+    }
+    return prev;
+}, {} as { [x in LogLevelKeys]: LogMethod });
 
 export default class Logs {
-    public static logLevel: LogLevel = 0;
+    private static logLevel: LogLevel = 0;
 
     public static init = (disabled = false) => {
         if (disabled) Logs.logLevel = -1;
@@ -77,4 +70,45 @@ export default class Logs {
             Logs.logLevel = Number(level);
         }
     };
+
+    /**
+     *
+     * @param logLevel the number, not the key
+     * @param args the items to print
+     */
+    private static add = (
+        logLevel: LogLevel,
+        ...args: Parameters<typeof console.log>
+    ): void => {
+        if (logLevel <= Logs.logLevel) {
+            if (logLevel >= Object.keys(logMethods).length)
+                throw new Error(`no log method for log level ${logLevel}`);
+
+            const { prefix, logger }: LogMethod =
+                logMethods[LogLevel[logLevel] as LogLevelKeys] ??
+                defaultLogMethod();
+            logger(prefix, ...args);
+        }
+    };
+
+    public static Error = (...args: LogArgs): void =>
+        Logs.add(LogLevel.ERROR, ...args, getStackFrame(3));
+
+    public static Test = (...args: LogArgs): void =>
+        Logs.add(LogLevel.TEST, ...args, getStackFrame(3));
+
+    public static Warn = (...args: LogArgs): void =>
+        Logs.add(LogLevel.WARN, ...args);
+
+    public static Debug = (...args: LogArgs): void =>
+        Logs.add(LogLevel.DEBUG, ...args, getStackFrame(3));
+
+    public static Log = (...args: LogArgs): void =>
+        Logs.add(LogLevel.LOG, ...args);
+
+    public static Cmd = (...args: LogArgs): void =>
+        Logs.add(LogLevel.CMD, ...args);
+
+    public static Sql = (...args: LogArgs): void =>
+        Logs.add(LogLevel.SQL, ...args);
 }

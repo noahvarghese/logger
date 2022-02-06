@@ -1,5 +1,4 @@
 import path from "path";
-import { logMethods } from "src";
 import { getStackFrame } from "./callstack";
 
 test("valid", () => {
@@ -38,8 +37,4 @@ describe("invalid", () => {
         }
         expect(errorThrown).toBe(true);
     });
-});
-
-test("test", () => {
-    console.log(logMethods);
 });
