@@ -26,3 +26,42 @@
 # Logger
 
 Javascript/Typescript logger. Basic right now, just used to share implementation across projects. At some point may be able to store logs instead of just outputting to std{err,out}.
+
+## Usage
+
+```typescript
+import Logger from "@noahvarghese/logger";
+
+// Typically set in a .env file, on deployment, or within CI
+process.env["LOG_LEVEL"] = 1;
+
+/**
+ * Environment variable options starting at 0 increasing by 1 each time
+ *
+ * enum LogLevels {
+ * ERROR,
+ * TEST,
+ * WARN,
+ * DEBUG,
+ * LOG,
+ * CMD,
+ * SQL
+ * }
+ *
+ */
+
+// Can override environment and turn off all logs by passing true to the init function
+const disableLogs = false;
+
+// Required to load environment variable into class
+Logs.init(disableLogs);
+```
+
+## Development - Getting Started
+
+```bash
+git clone https://github.com/noahvarghese/logger
+cd ./logger
+npm i
+npm run init
+```
