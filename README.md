@@ -23,6 +23,8 @@
 
 # TS Logger
 
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlGHrAqCm0jxr6cnKUaZOaBlaxsDrmmasGiA&usqp=CAU" alt="log"/>
+
 ## About
 
 Javascript/Typescript logger. Basic right now, just used to share implementation across projects. At some point may be able to store logs instead of just outputting to std{err,out}.
