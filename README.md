@@ -27,6 +27,12 @@
 
 Javascript/Typescript logger. Basic right now, just used to share implementation across projects. At some point may be able to store logs instead of just outputting to std{err,out}.
 
+## Installation
+
+```bash
+npm i @noahvarghese/logger
+```
+
 ## Usage
 
 ```typescript
