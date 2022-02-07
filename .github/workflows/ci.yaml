@@ -22,7 +22,6 @@ jobs:
   continuous-integration:
     if: "(!contains(github.event.head_commit.message, 'pipeline skip') && !contains(github.event.head_commit.message, 'skip pipeline')) || (!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci'))"
     env:
-      LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
       TIMEOUT_MULTIPLIER: ${{ secrets.TIMEOUT_MULTIPLIER }}
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +35,7 @@ jobs:
       - id: cache-node-modules
         uses: ./.github/actions/cache-node-modules
       - name: test
-        run: |
-          npm run test
+        run: npm run test -- -o
         shell: bash
       - name: build
         run: npm run build
