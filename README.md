@@ -86,5 +86,6 @@ Logs.Sql("sql"); // [ SQL ]: sql
 git clone https://github.com/noahvarghese/logger
 cd ./logger
 npm i
+# Configures pre commit hook and shell preferences
 npm run init
 ```
