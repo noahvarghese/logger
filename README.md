@@ -33,7 +33,7 @@ Javascript/Typescript logger. Basic right now, just used to share implementation
 import Logger from "@noahvarghese/logger";
 
 // Typically set in a .env file, on deployment, or within CI
-process.env["LOG_LEVEL"] = 6;
+process.env["LOG_LEVEL"] = 7;
 
 /**
  * Setting the environment variable LOG_LEVEL dictates which logging calls will be output
